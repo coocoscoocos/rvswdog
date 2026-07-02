@@ -35,23 +35,19 @@ void cmd_scan(uint8_t *argv[]) {
 
 void cmd_read(uint8_t *argv[]) {
     // todo Максимальная и минимальная длина аргумента
-    print_string("Read\r\n");
     uint32_t addr;
     uint8_t r = hex_to_uint32(argv[0], &addr);
     if (1 == r) {
         print_string("\r\nerror\r\n");
         return;
     }
-    uart_tx_data("\r\n", 2);
-    print_uint32(addr);
-    uart_tx_data("\r\n=", 3);
     uint32_t mem = 0;
     ch32v20x_read_memory_word(addr, &mem);
+    print_string("=");
     print_uint32(mem);
 }
 
 void cmd_write(uint8_t *argv[]) {
-    print_string("Write\r\n");
     uint32_t addr;
     uint32_t value;
     uint8_t r = hex_to_uint32(argv[0], &addr);
@@ -64,13 +60,8 @@ void cmd_write(uint8_t *argv[]) {
         print_string("\r\nerror\r\n");
         return;
     }
-    print_string("\r\n");
-    print_uint32(addr);
-    uart_tx_byte(' ');
-    print_uint32(value);
     ch32v20x_write_memory_word(addr, value);
-    print_string("\r\n");
-    print_string("ok\r\n");
+    print_string("ok");
 }
 
 struct cmd {
