@@ -1,11 +1,11 @@
 CC = sdcc
-CFLAGS = -mstm8 --opt-code-size --std-c23
+CFLAGS = -mstm8 --opt-code-size --std-c23 -Iinclude
 LDFLAGS = -mstm8 -lstm8 --verbose
 BUILD_DIR = build
 
 TARGET = rvswd
 
-SRCS = $(wildcard *.c)
+SRCS = $(wildcard src/*.c)
 OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.c=.rel)))
 
 .PHONY: all clean flash
@@ -16,7 +16,7 @@ $(BUILD_DIR)/$(TARGET).ihx: $(OBJS)
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-$(BUILD_DIR)/%.rel: %.c
+$(BUILD_DIR)/%.rel: src/%.c
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
